@@ -1,4 +1,4 @@
-[TIMER] Process Time: 12:51:35
+[TIMER] Process Time: 19:47:44
 [INFO] GPU not detected.
 [INFO] Done importing packages.
 [INFO] Loading Training and Test Datasets.

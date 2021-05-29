@@ -2,6 +2,8 @@
 This is the main CNN made using tensorflow to train a model to recognize photos
 of the FTC team.
 
+Current Accuracy (of saved model): 72% validation data, 39% testing
+
 Windows 10 Laptop
 
 CPU: 16 GB RAM, Intel(R) Core(TM) i7-7560U CPU @ 2.40 GHz
@@ -73,6 +75,7 @@ def scheduler(epoch, lr):
     if epoch < 10:
         return lr
     else:
+        # return lr * tf.math.exp(-0.1)
         return lr * tf.math.exp(-0.1)
 
 def imageManipulation(image):
@@ -161,15 +164,19 @@ class Net():
         self.model.add(layers.Flatten())
 
         # Parameters: Outgoing Layers, Activation Func.
-        self.model.add(layers.Dense(96, activation = 'relu'))
-        self.model.add(layers.Dense(24, activation = 'relu'))
+        # self.model.add(layers.Dense(96, activation = 'relu'))
+        # self.model.add(layers.Dense(24, activation = 'relu'))
+        self.model.add(layers.Dense(96, activation = 'sigmoid'))
+        self.model.add(layers.Dense(24, activation = 'sigmoid'))
         self.model.add(layers.Dense(2))
 
-        #Keyword Parameters: lr (learning rate), momentum
         # self.optimizer = optimizers.SGD(lr=0.001, momentum=0.9)
-        self.optimizer = optimizers.Adam(lr=0.001)
+        self.optimizer = optimizers.Adam(lr=0.0001)
+        # self.optimizer = optimizers.RMSprop(lr=0.005)
+
         # self.loss = losses.MeanSquaredError()
         self.loss = losses.BinaryCrossentropy()
+        # self.loss = losses.CategoricalCrossentropy()
         #Keyword Parameters: loss (the loss function to use), optimizer (the optimizer to use), metrics (what metrics it will measure and output)
         self.model.compile(loss=self.loss, optimizer=self.optimizer, metrics=['accuracy'])
 
@@ -232,8 +239,8 @@ lb = preprocessing.LabelBinarizer()
 trainY = lb.fit_transform(trainY)
 testY = lb.fit_transform(testY)
 
-print(testX)
-print(testY)
+# print(testX)
+# print(testY)
 
 classes = ["teamTrue", "teamFalse"]
 

@@ -21,6 +21,10 @@ import shutil
 File = namedtuple('File', 'name path size modified_date')
 
 dest = r"C:\Users\Michael Zeng\Documents\Programming\Recognizing FTC Team\Training Images\teamFalse"
+destPath = Path(dest)
+allNames = []
+for item in destPath.glob('**/*'):    #Loops through all files & directories in p, including nested directories
+    allNames.append(item.name)
 
 #Looping through the directories to collect all images
 files = []
@@ -40,11 +44,12 @@ for item in p.glob('**/*'):     #Loops through all files & directories in p, inc
         print("value: " + str(value))
 
         numFilesInFolder = len([item for item in os.listdir(r"C:\Users\Michael Zeng\Documents\Programming\Recognizing FTC Team\Training Images\teamFalse")])
-        if value <= 1000:
+        print(str(item.name in allNames))
+        if value <= 1000 and item.name not in allNames:
             # files.append(File(name, path, size, modified))
             print("name: " + str(name) + "           path: " + str(path))
             os.chdir(path)
             shutil.copy(name, dest)
-        if numFilesInFolder == 160:
+        if numFilesInFolder == 250:
             print("breaking")
             break
